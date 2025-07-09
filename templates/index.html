@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descargador de YouTube Gratuito</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1A202C 0%, #2D3748 100%);
+        }
+        .glass-effect {
+            background-color: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-100 flex items-center justify-center min-h-screen">
+    <div class="glass-effect p-8 rounded-2xl shadow-xl w-full max-w-md border-t-4 border-blue-500">
+        <h1 class="text-4xl font-extrabold text-center text-white mb-4 tracking-wide">YT Descargador</h1>
+        <p class="text-center text-blue-300 text-lg mb-8">By Jafi Dev - Tu Portal de Contenido</p>
+        
+        {% if message %}
+            <div class="bg-green-700 bg-opacity-30 border border-green-500 text-green-200 p-4 rounded-lg mb-4" role="alert">
+                <p>{{ message }}</p>
+            </div>
+        {% endif %}
+        {% if error %}
+            <div class="bg-red-700 bg-opacity-30 border border-red-500 text-red-200 p-4 rounded-lg mb-4" role="alert">
+                <p>{{ error }}</p>
+            </div>
+        {% endif %}
+
+        <form id="downloadForm" action="/download" method="post" class="space-y-6" target="hidden_iframe">
+            <div>
+                <label for="url" class="block text-blue-300 text-sm font-semibold mb-2">URL de YouTube:</label>
+                <input type="text" id="url" name="url" placeholder="Pega tu URL de video/playlist aquí..." 
+                       class="w-full px-4 py-3 rounded-lg bg-gray-700 bg-opacity-50 border border-gray-600 focus:border-blue-500 focus:ring-blue-500 text-white placeholder-gray-400 focus:outline-none transition duration-300" required>
+            </div>
+            
+            <div>
+                <label for="download_type" class="block text-blue-300 text-sm font-semibold mb-2">Tipo de descarga:</label>
+                <select id="download_type" name="download_type" 
+                        class="w-full px-4 py-3 rounded-lg bg-gray-700 bg-opacity-50 border border-gray-600 focus:border-blue-500 focus:ring-blue-500 text-white focus:outline-none appearance-none transition duration-300">
+                    <option value="audio" class="bg-gray-800 text-white" selected>Audio (MP3)</option>
+                    <option value="video" class="bg-gray-800 text-white">Video (MP4)</option>
+                    <option value="playlist_audio" class="bg-gray-800 text-white">Playlist (Solo Audio)</option>
+                </select>
+            </div>
+            
+            <button type="submit" id="downloadButton"
+                    class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 rounded-lg shadow-lg transform transition duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50">
+                Descargar Contenido
+            </button>
+
+            <div id="loadingIndicator" class="hidden flex items-center justify-center text-blue-300 mt-4">
+                <div class="spinner mr-3"></div>
+                <span>Preparando descarga... Por favor espera.</span>
+            </div>
+        </form>
+
+        <!-- Nueva Sección de Apoyo -->
+        <div class="mt-8 text-center text-gray-300">
+            <p class="mb-2">¿Te fue útil esta aplicación?</p>
+            <p class="mb-4">Compartela:) Si quieres apoyar mi trabajo y mantener este servicio gratuito, ¡cualquier donación es bienvenida!</p>
+            <a href="https://paypal.me/JMartinezBeitia?country.x=PA&locale.x=es_XC" target="_blank" rel="noopener noreferrer"
+               class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-full shadow-lg transform transition duration-300 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50">
+                PayPal
+            </a>
+            <p class="mt-4 text-sm text-gray-400">¡Gracias por tu generosidad!</p>
+        </div>
+        <!-- Fin Nueva Sección de Apoyo -->
+
+    </div>
+
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+    <script>
+        const downloadForm = document.getElementById('downloadForm');
+        const downloadButton = document.getElementById('downloadButton');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+
+        function resetUI() {
+            loadingIndicator.classList.add('hidden');
+            downloadButton.disabled = false;
+            downloadButton.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+
+        downloadForm.addEventListener('submit', function() {
+            downloadButton.disabled = true;
+            downloadButton.classList.add('opacity-50', 'cursor-not-allowed');
+            loadingIndicator.classList.remove('hidden'); 
+
+            setTimeout(resetUI, 3000);
+        });
+        
+        window.onload = resetUI;
+    </script>
+</body>
+</html>

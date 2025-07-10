@@ -52,6 +52,8 @@ def download():
                 file_to_send, 
                 as_attachment=True, 
                 download_name=os.path.basename(file_to_send)
+
+                
             ))
             
             # Definimos la función de limpieza que se ejecutará DESPUÉS de que Flask envíe la respuesta.

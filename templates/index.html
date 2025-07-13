@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Descargador de YouTube Gratuito</title>
+    <title>Descargador de YouTube</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -73,17 +73,13 @@
             </div>
         </form>
 
-        <!-- Nueva Sección de Apoyo -->
-        <div class="mt-8 text-center text-gray-300">
-            <p class="mb-2">¿Te fue útil esta aplicación?</p>
-            <p class="mb-4">Compartela:) Si quieres apoyar mi trabajo y mantener este servicio gratuito, ¡cualquier donación es bienvenida!</p>
-            <a href="https://paypal.me/JMartinezBeitia?country.x=PA&locale.x=es_XC" target="_blank" rel="noopener noreferrer"
-               class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-full shadow-lg transform transition duration-300 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50">
-                PayPal
-            </a>
-            <p class="mt-4 text-sm text-gray-400">¡Gracias por tu generosidad!</p>
+        <!-- Mensaje de advertencia sobre YouTube -->
+        <div class="mt-8 text-center text-yellow-300 bg-yellow-700 bg-opacity-30 border border-yellow-500 p-4 rounded-lg">
+            <p class="font-bold mb-2">¡Importante!</p>
+            <p class="text-sm">Debido a las estrictas políticas de YouTube contra las descargas directas desde servidores, las descargas desde servidores no esta funcionando, pero localmente si funciona a la perfeccion. Esto es una limitación externa a la aplicación.</p>
         </div>
-        <!-- Fin Nueva Sección de Apoyo -->
+        <!-- Fin Mensaje de advertencia sobre YouTube -->
+
 
     </div>
 
@@ -105,7 +101,9 @@
             downloadButton.classList.add('opacity-50', 'cursor-not-allowed');
             loadingIndicator.classList.remove('hidden'); 
 
-            setTimeout(resetUI, 3000);
+            // Pequeño retraso para dar tiempo a que el spinner se vea antes de la descarga
+            // y para manejar el "cold start" en Render si aplica.
+            setTimeout(resetUI, 5000); // Aumentado a 5 segundos para un mejor UX
         });
         
         window.onload = resetUI;
